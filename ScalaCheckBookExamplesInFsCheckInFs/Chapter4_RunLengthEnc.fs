@@ -8,25 +8,39 @@ open NUnit.Framework
 
 let config = Config.VerboseThrowOnFailure
 
-let runLengthEnc (xs: seq<'a>): seq<int * 'a> = Seq.empty
+let runLengthEnc (xs: list<'a>): list<int * 'a> =
+    let rec loop (xs: list<'a>) (acc: list<int * 'a>) (ftt: bool) (ope: option<'a>) (pec: int): list<int * 'a> =
+        match xs with
+            | [] ->
+                match ope with
+                    | Some(pe) -> List.append acc [(pec, pe)]
+                    | _ -> acc
+            | e::rest ->
+                if ftt then loop rest acc false (Some(e)) 1
+                else
+                    match ope with
+                        | Some(pe) ->
+                            if e = pe then loop rest acc false ope (pec + 1)
+                            else loop rest (List.append acc [(pec, pe)]) false (Some(e)) 1
+                        | _ -> acc
+    loop xs [] true None 0
 
-let runLengthDec (r: seq<int * 'a>): seq<'a> =
-    Seq.collect (fun (n, x) -> List.replicate n x) r
+let runLengthDec (r: list<int * 'a>): list<'a> =
+    List.collect (fun t -> t ||> List.replicate) r
 
-let genOutput: Gen<seq<int * char>> =
+let genOutput: Gen<list<int * char>> =
     let rleItem: Gen<int * char> = gen {
         let! n = choose (1, 20)
         let! c = GenExtensions.AlphaNumChar
         return (n, c)
     }
-    let rec rleList (size: int): Gen<seq<int * char>> =
-        if (size <= 1) then map Seq.singleton rleItem
+    let rec rleList (size: int): Gen<list<int * char>> =
+        if (size <= 1) then map (fun x -> [x]) rleItem
         else gen {
-            let! xs = rleList (size - 1)
-            let (_, c1) = Seq.head xs
-            let tail = Seq.skip 1 xs
+            let! tail = rleList (size - 1)
+            let (_, c1) = List.head tail
             let! head = suchThat (fun (_, c2) -> c2 <> c1) rleItem
-            return Seq.append (Seq.singleton head) tail
+            return head :: tail
         }
     sized rleList
 
