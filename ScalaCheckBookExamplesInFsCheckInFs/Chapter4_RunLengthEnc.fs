@@ -9,21 +9,19 @@ open NUnit.Framework
 let config = Config.VerboseThrowOnFailure
 
 let runLengthEnc (xs: list<'a>): list<int * 'a> =
-    let rec loop (xs: list<'a>) (acc: list<int * 'a>) (ftt: bool) (ope: option<'a>) (pec: int): list<int * 'a> =
+    let rec loop (xs: list<'a>) (acc: list<int * 'a>) (ope: option<'a>) (pec: int): list<int * 'a> =
         match xs with
             | [] ->
                 match ope with
                     | Some(pe) -> List.append acc [(pec, pe)]
                     | _ -> acc
             | e::rest ->
-                if ftt then loop rest acc false (Some(e)) 1
-                else
-                    match ope with
-                        | Some(pe) ->
-                            if e = pe then loop rest acc false ope (pec + 1)
-                            else loop rest (List.append acc [(pec, pe)]) false (Some(e)) 1
-                        | _ -> acc
-    loop xs [] true None 0
+                match ope with
+                    | Some(pe) ->
+                        if e = pe then loop rest acc ope (pec + 1)
+                        else loop rest (List.append acc [(pec, pe)]) (Some(e)) 1
+                    | _ -> loop rest acc (Some(e)) 1
+    loop xs [] None 0
 
 let runLengthDec (r: list<int * 'a>): list<'a> =
     List.collect (fun t -> t ||> List.replicate) r
