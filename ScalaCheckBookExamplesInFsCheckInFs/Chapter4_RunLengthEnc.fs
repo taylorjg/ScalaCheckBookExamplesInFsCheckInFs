@@ -7,12 +7,10 @@ let runLengthEnc (xs: list<'a>): list<int * 'a> =
                 | ([], None) -> yield! Seq.empty
                 | ([], Some(t)) -> yield t
                 | (x::rest, None) -> yield! loop rest (Some(1, x))
-                | (x1::rest, Some((n, x2) as t)) ->
-                    if x1 = x2 then yield! loop rest (Some(n + 1, x2))
-                    else yield t; yield! loop rest (Some(1, x1))
+                | (x1::rest, Some((n, x2))) when x1 = x2 -> yield! loop rest (Some(n + 1, x2))
+                | (x::rest, Some(t)) -> yield t; yield! loop rest (Some(1, x))
         }
     loop xs None |> Seq.toList
 
 let runLengthDec (r: list<int * 'a>): list<'a> =
     List.collect (fun t -> t ||> List.replicate) r
-
