@@ -47,6 +47,8 @@
   <ItemGroup>
     <Compile Include="Chapter4_RunLengthEnc.fs" />
     <Compile Include="Chapter4_RunLengthEncTests.fs" />
+    <Compile Include="Chapter5_Interleaving.fs" />
+    <Compile Include="Chapter5_InterleavingTests.fs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
