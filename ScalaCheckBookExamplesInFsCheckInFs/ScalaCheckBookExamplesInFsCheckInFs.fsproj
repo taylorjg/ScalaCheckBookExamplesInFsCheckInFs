@@ -48,20 +48,10 @@
     <Compile Include="Chapter4_RunLengthEnc.fs" />
     <Compile Include="Chapter4_RunLengthEncTests.fs" />
     <None Include="packages.config" />
-    <None Include="app.config" />
-    <Compile Include="FsCheckAddin.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FsCheck">
       <HintPath>..\packages\FsCheck.1.0.4\lib\net45\FsCheck.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FsCheck.NUnit">
-      <HintPath>..\packages\FsCheck.Nunit.1.0.4\lib\net45\FsCheck.NUnit.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FsCheck.NUnit.Addin">
-      <HintPath>..\packages\FsCheck.Nunit.1.0.4\lib\net45\FsCheck.NUnit.Addin.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FsCheckUtils">

@@ -18,8 +18,7 @@ let genOutput: Gen<list<int * char>> =
     let rec rleList (size: int): Gen<list<int * char>> =
         if (size <= 1) then map (fun x -> [x]) rleItem
         else gen {
-            let! tail = rleList (size - 1)
-            let (_, c1) = List.head tail
+            let! ((_, c1)::_) as tail = rleList (size - 1)
             let! head = suchThat (fun (_, c2) -> c2 <> c1) rleItem
             return head :: tail
         }
