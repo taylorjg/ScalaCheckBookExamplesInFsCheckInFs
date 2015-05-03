@@ -46,6 +46,7 @@
   </Target>
   <ItemGroup>
     <Compile Include="Chapter4_RunLengthEnc.fs" />
+    <Compile Include="Chapter4_RunLengthEncTests.fs" />
     <None Include="packages.config" />
     <None Include="app.config" />
     <Compile Include="FsCheckAddin.fs" />
