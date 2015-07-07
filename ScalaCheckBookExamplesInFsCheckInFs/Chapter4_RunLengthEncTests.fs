@@ -12,7 +12,7 @@ let config = Config.VerboseThrowOnFailure
 let genOutput: Gen<list<int * char>> =
     let rleItem: Gen<int * char> = gen {
         let! n = choose (1, 20)
-        let! c = GenExtensions.AlphaNumChar
+        let! c = alphaNumChar
         return (n, c)
     }
     let rec rleList (size: int): Gen<list<int * char>> =
