@@ -2,7 +2,7 @@
 
 open FsCheck.Gen
 
-let genCharInRange (l, h) = choose (int l, int h) |> map char
+let private genCharInRange (l, h) = choose (int l, int h) |> map char
 
 let numChar = genCharInRange ('0', '9')
 let alphaUpperChar = genCharInRange ('A', 'Z')

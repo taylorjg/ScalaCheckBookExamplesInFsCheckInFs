@@ -62,6 +62,7 @@
     <Compile Include="Chapter4_RunLengthEncTests.fs" />
     <Compile Include="Chapter5_Interleaving.fs" />
     <Compile Include="Chapter5_InterleavingTests.fs" />
+    <Compile Include="Chapter6_CustomTestCaseSimplification.fs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
