@@ -1,6 +1,7 @@
 ﻿module Chapter6_CustomTestCaseSimplification
 
 open FsCheck
+open Arb
 open Gen
 open Prop
 open NUnit.Framework
@@ -22,8 +23,8 @@ let rewrite e =
         | Mul (Const 0, _) -> Const 0
         // "Add (Const 1, e) -> e" is a bug. Use it instead of
         // "Add (Const 0, e) -> e" to demonstrate shrinking.
-        // | Add (Const 1, e) -> e
-        | Add (Const 0, e) -> e
+        | Add (Const 1, e) -> e
+        // | Add (Const 0, e) -> e
         | _ -> e
 
 #nowarn "40"
@@ -52,20 +53,33 @@ and genMul =
         return Mul (e1, e2)
     }
 
+let shrinkExpr expr =
+    match expr with
+        | Const n -> shrink n |> Seq.map Const
+        | Add (e1, e2) -> Seq.concat [
+                            [e1; e2] |> List.toSeq;
+                            shrink e1 |> Seq.map (fun e -> Add (e, e2));
+                            shrink e2 |> Seq.map (fun e -> Add (e1, e))]
+        | Mul (e1, e2) -> Seq.concat [
+                            [e1; e2] |> List.toSeq;
+                            shrink e1 |> Seq.map (fun e -> Mul (e, e2));
+                            shrink e2 |> Seq.map (fun e -> Mul (e1, e))]
+
 type MyGenerators =
   static member Expression() =
     { new Arbitrary<Expression>() with
           override x.Generator = genExpr
-          // That's interesting. I haven't implemented shrinking but it still shrinks anyway!
-          override x.Shrinker t = Seq.empty
+          override x.Shrinker t = shrinkExpr t
     }
-
-Arb.register<MyGenerators>() |> ignore
 
 let propRewrite expr =
     eval (rewrite expr) = eval expr
 
 [<Test>]
 let testRewrite() =
-    let config = { Config.QuickThrowOnFailure with MaxTest = 1000 }
+    Arb.register<MyGenerators>() |> ignore
+    let config = { Config.QuickThrowOnFailure with
+                    MaxTest = 1000;
+                    StartSize = 20;
+                    EveryShrink = Config.VerboseThrowOnFailure.EveryShrink }
     Check.One (config, propRewrite)
