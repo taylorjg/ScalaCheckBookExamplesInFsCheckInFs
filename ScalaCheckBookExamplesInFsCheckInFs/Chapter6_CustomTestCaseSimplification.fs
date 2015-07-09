@@ -23,8 +23,8 @@ let rewrite e =
         | Mul (Const 0, _) -> Const 0
         // "Add (Const 1, e) -> e" is a bug. Use it instead of
         // "Add (Const 0, e) -> e" to demonstrate shrinking.
-        | Add (Const 1, e) -> e
-        // | Add (Const 0, e) -> e
+        // | Add (Const 1, e) -> e
+        | Add (Const 0, e) -> e
         | _ -> e
 
 #nowarn "40"
