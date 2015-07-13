@@ -6,10 +6,20 @@ open Gen
 open Prop
 open NUnit.Framework
 
+[<StructuredFormatDisplay("{DisplayValue}")>]
 type Expression
     = Const of int
     | Add of Expression * Expression
     | Mul of Expression * Expression
+
+let rec show expr =
+    match expr with
+        | Const n -> sprintf "%d" n
+        | Add (e1, e2) -> sprintf "(%s + %s)" (show e1) (show e2)
+        | Mul (e1, e2) -> sprintf "(%s * %s)" (show e1) (show e2)
+
+type Expression with
+    member public this.DisplayValue = show this
 
 let rec eval expr =
     match expr with
@@ -80,6 +90,6 @@ let testRewrite() =
     Arb.register<MyGenerators>() |> ignore
     let config = { Config.QuickThrowOnFailure with
                     MaxTest = 1000;
-                    StartSize = 20;
+                    StartSize = 1000;
                     EveryShrink = Config.VerboseThrowOnFailure.EveryShrink }
     Check.One (config, propRewrite)
