@@ -3,7 +3,7 @@
 
 The book, [_ScalaCheck: The Definitive Guide_](http://www.artima.com/shop/scalacheck), contains some nice examples
 of property-based testing. The idea of this repo is to port some of these
-examples from Scala / ScalaCheck to F# / FsCheck 2.0.
+examples from Scala / ScalaCheck to F# / FsCheck 2.
 
 ## Progress
 
