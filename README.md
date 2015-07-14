@@ -31,5 +31,5 @@ Below is a list of examples that I have converted so far:
 * http://booksites.artima.com/scalacheck/ScalaCheckExamples.zip
 * https://github.com/fsharp/FsCheck
 * https://fsharp.github.io/FsCheck/
-* [Port of the examples in the ScalaCheck book to C# and FsCheck 2.0](https://github.com/taylorjg/ScalaCheckBookExamplesInFsCheck2)
+* [Port of the examples in the ScalaCheck book to C# and FsCheck 2](https://github.com/taylorjg/ScalaCheckBookExamplesInFsCheck2)
 * [Port of the examples in the ScalaCheck book to Haskell and QuickCheck](https://github.com/taylorjg/ScalaCheckBookExamplesInQuickCheck)
